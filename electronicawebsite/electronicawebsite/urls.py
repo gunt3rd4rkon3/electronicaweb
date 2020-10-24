@@ -31,5 +31,5 @@ urlpatterns += [
 urlpatterns += [
     path('', RedirectView.as_view(url='inventory/', permanent=True)),
 ]
-
+# Development only
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
