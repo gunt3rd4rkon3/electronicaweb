@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Inventory Home</h1>
+    <p>Welcome to the inventory of the store</p>
+    <h2>Dynamic content</h2>
+    <p>The invetory has the following record counts:</p>
+    <ul>
+        <li><strong>Products: </strong>{{ num_products }}</li>
+        <li><strong>Stock: </strong>{{ num_instances }}</li>
+        <li><strong>Products Available: </strong>{{ num_instances_available }}</li>
+        <li><strong>Suppliers: </strong>{{ num_suppliers }}</li>
+    </ul>
+{% endblock %}
