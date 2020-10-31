@@ -1,0 +1,27 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Title: {{ product.title }}</h1>
+
+    <p><strong>Supplier: </strong> <a href="">{{ product.supplier }}</a></p>
+    <p><strong>Summary: </strong>{{ product.summary }}</p>
+    <p><strong>SN: </strong>{{ product.sn }}</p>
+    <!-- el sn habra que pasarlo a las instancias -->
+    <p><strong>Category: </strong>{{ product.category.all|join:", " }}</p>
+
+    <div style="margin-left: 20px; margin-top: 20px">
+        <h4>Stock</h4>
+
+        {% for stock in product.productinstance_set.all %}
+            <hr>
+            <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 's' %}text-danger{% else %}text-warning{% endif %}">
+                {{ stock.get_status_display }}
+            </p>
+            {% if stock.status != 'a' %}
+                <p><strong>Reponer</strong></p>
+            {% endif %}
+            <!-- por aqui habra que hacer algo con el stock y la fecha para el aviso de menos de 90% -->
+            <p><strong>ID: </strong>{{ stock.id }}</p>
+        {% endfor %}
+    </div>
+{% endblock %}

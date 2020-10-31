@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Product, Supplier, ProductInstance, Category
+from django.views import generic
 
 
 def index(request):
@@ -24,3 +25,12 @@ def index(request):
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
+
+
+class ProductListView(generic.ListView):
+    model = Product
+    paginate_by = 2
+
+
+class ProductDetailView(generic.DetailView):
+    model = Product
