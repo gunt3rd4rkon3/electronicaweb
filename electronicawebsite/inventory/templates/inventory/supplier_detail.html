@@ -1,0 +1,9 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Title: {{ supplier.business_name }}</h1>
+
+    <p><strong>cif: </strong> <a href="">{{ supplier.cif }}</a></p>
+    <p><strong>Summary: </strong>{{ product.summary }}</p>
+    <p><strong>email: </strong>{{ supplier.business_email }}</p>
+{% endblock %}

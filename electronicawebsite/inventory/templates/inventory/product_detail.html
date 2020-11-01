@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Title: {{ product.title }}</h1>
 
-    <p><strong>Supplier: </strong> <a href="">{{ product.supplier }}</a></p>
+    <p><strong>Supplier: </strong> <a href="{% url 'supplier-detail' product.supplier.pk%}">{{ product.supplier }}</a></p>
     <p><strong>Summary: </strong>{{ product.summary }}</p>
     <p><strong>SN: </strong>{{ product.sn }}</p>
     <!-- el sn habra que pasarlo a las instancias -->

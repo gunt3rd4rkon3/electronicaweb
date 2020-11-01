@@ -34,3 +34,12 @@ class ProductListView(generic.ListView):
 
 class ProductDetailView(generic.DetailView):
     model = Product
+
+
+class SupplierListView(generic.ListView):
+    model = Supplier
+    paginate_by = 2
+
+
+class SupplierDetailView(generic.DetailView):
+    model = Supplier

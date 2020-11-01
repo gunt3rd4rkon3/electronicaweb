@@ -82,7 +82,7 @@ class Supplier(models.Model):
 
     def get_absolute_url(self):
         """Return the url to access a particular supplier instance."""
-        return reverse('supplier_detail', args=[str(self.id)])
+        return reverse('supplier-detail', args=[str(self.id)])
 
     def __str__(self):
         """String for representing the Model object."""
