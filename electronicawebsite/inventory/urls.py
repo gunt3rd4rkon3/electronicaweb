@@ -8,3 +8,7 @@ urlpatterns = [
     path('suppliers/', views.SupplierListView.as_view(), name='suppliers'),
     path('supplier/<int:pk>', views.SupplierDetailView.as_view(), name='supplier-detail'),
 ]
+
+urlpatterns += [
+    path('myproducts/', views.BoughtProductsByUserListView.as_view(), name='my-boughts'),
+]

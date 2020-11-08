@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Product, Supplier, ProductInstance, Category
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def index(request):
@@ -43,3 +44,13 @@ class SupplierListView(generic.ListView):
 
 class SupplierDetailView(generic.DetailView):
     model = Supplier
+
+
+class BoughtProductsByUserListView(LoginRequiredMixin, generic.ListView):
+    """Generic class-based view listing products buyed by the current user"""
+    model = ProductInstance
+    template_name = 'inventory/productinstance_list_sinnombre_user.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return ProductInstance.objects.filter(sinnombre=self.request.user).filter(status__exact='a').order_by('available_date')

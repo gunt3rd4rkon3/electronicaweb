@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Products Bought</h1>
+
+    {% if productinstance_list %}
+    <ul>
+
+      {% for productinst in productinstance_list %}
+      <li class="{% if productinst.is_overdue %}text-success{% else %}text-danger{% endif %}">
+        <a href="{% url 'product-detail' productinst.product.pk %}">{{productinst.product.title}}</a> ({{ productinst.available_date }})
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <p>There are no products bought.</p>
+    {% endif %}
+{% endblock %}

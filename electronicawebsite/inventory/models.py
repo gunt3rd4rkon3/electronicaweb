@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
+from datetime import date
 import uuid  # Required for unique product instance
 
 
@@ -14,12 +16,13 @@ class Category(models.Model):
 
 class Product(models.Model):
     """Model representing a product (but not a specific copy of a product)."""
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, default='some string')
 
     # Foreing Key used because product can only have one supplier, but suppliers can have multiple products
     # Supplier as a string rather than object because it hasn´t been declare yet in the file
     supplier = models.ForeignKey('Supplier', on_delete=models.SET_NULL, null=True)
-
+    maxunits = models.IntegerField(null=True, blank=True)
+    stock = models.IntegerField(null=True, blank=True)
     summary = models.TextField(max_length=1000, help_text='Enter a brief description of the product')
     sn = models.CharField('SN', max_length=30, help_text='30 Char MaxSize <a href="https://en.wikipedia.org/wiki/Serial_number">S/N</a>')
 
@@ -47,6 +50,8 @@ class ProductInstance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this particular product across whole inventory')
     product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True)
     register_date = models.DateField(null=True, blank=True)
+    available_date = models.DateField(null=True, blank=True)
+    sinnombre = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     PRODUCT_STATE = (
         ('a', 'Available'),
@@ -65,6 +70,12 @@ class ProductInstance(models.Model):
 
     class Meta:
         ordering = ['register_date']
+
+    @property
+    def is_overdue(self):
+        if self.available_date and date.today() > self.available_date:
+            return True
+        return False
 
     def __str__(self):
         """String for representing the Model object"""

@@ -11,7 +11,7 @@ class ProductInstanceInline(admin.TabularInline):
 # Register the Admin classes for Product using the decorator
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'supplier', 'display_category')
+    list_display = ('title', 'supplier', 'display_category', 'stock', 'maxunits')
     inlines = [ProductInstanceInline]
 
 
@@ -25,7 +25,7 @@ class ProductInstanceAdmin(admin.ModelAdmin):
             'fields': ('product', 'id'),
         }),
         ('Availability', {
-            'fields': ('status', 'register_date')
+            'fields': ('status', 'register_date', 'available_date', 'sinnombre')
         }),
     )
 
