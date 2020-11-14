@@ -1,0 +1,27 @@
+  
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>All Available products</h1>
+
+    {% if productinstance_list %}
+    <ul>
+
+      {% for productinst in productinstance_list %}
+      <li class="   {% if productinst.status == 'a' %}text-success
+                    {% elif productinst.is_overdue %}text-warning
+                    {% else %}text-danger
+                    {% endif %}">
+        <a href="{% url 'product-detail' productinst.product.pk %}">
+            {{productinst.product.title}}
+        </a> ({{ productinst.available_date }})
+          {% if user.is_staff %}- {{ productinst.available }}{% endif %}
+          {% if perms.catalog.can_mark_returned %}- <a href="{% url 'order-product-worker' productinst.id %}">Change available date.</a>  {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <p>There are no products availables.</p>
+    {% endif %}       
+{% endblock %}

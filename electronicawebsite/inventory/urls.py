@@ -11,4 +11,15 @@ urlpatterns = [
 
 urlpatterns += [
     path('myproducts/', views.BoughtProductsByUserListView.as_view(), name='my-boughts'),
+    path(r'available/', views.LoanedProductsAllListView.as_view(), name='all-available'),
+]
+
+urlpatterns += [
+    path('product/<uuid:pk>/order/', views.order_product_worker, name='order-product-worker'),
+]
+
+urlpatterns += [
+    path('supplier/create', views.SupplierCreate.as_view(), name='supplier_create'),
+    path('supplier/<int:pk>/update', views.SupplierUpdate.as_view(), name='supplier_update'),
+    path('supplier/<int:pk>/delete', views.SupplierDelete.as_view(), name='supplier_delete'),
 ]

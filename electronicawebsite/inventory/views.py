@@ -1,7 +1,15 @@
 from django.shortcuts import render
 from .models import Product, Supplier, ProductInstance, Category
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+import datetime
+from django.contrib.auth.decorators import login_required, permission_required
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .forms import OrderProductForm
 
 
 def index(request):
@@ -54,3 +62,63 @@ class BoughtProductsByUserListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return ProductInstance.objects.filter(sinnombre=self.request.user).filter(status__exact='a').order_by('available_date')
+
+
+class LoanedProductsAllListView(PermissionRequiredMixin, generic.ListView):
+    """Generic class-based  view listing products on loan to current user"""
+    model = ProductInstance
+    permission_required = 'inventory.can_mark_returned'
+    template_name = 'inventory/productinstance_list_available_all.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return ProductInstance.objects.filter(status__exact='a').order_by('available_date')
+
+
+@login_required
+@permission_required('inventory.can_mark_returned', raise_exception=True)
+def order_product_worker(request, pk):
+    """View function for order a specific ProductInstance by worker"""
+    product_instance = get_object_or_404(ProductInstance, pk=pk)
+
+    # if this is a POST request then process the form data
+    if request.method == 'POST':
+
+        # create a form instance and postulate it with data form the request (binding):
+        form = OrderProductForm(request.POST)
+
+        # check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model available_date field)
+            product_instance.available_date = form.cleaned_data['order_date']
+            product_instance.save()
+
+            # redirect to a new URL:
+            return HttpResponseRedirect(reverse('all-available'))
+
+    # if this is a GET ( or any other method ) create the default form
+    else:
+            proposed_landing_date = datetime.date.today() + datetime.timedelta(weeks=3)
+            form = OrderProductForm(initial={'available_date': proposed_landing_date})
+
+    context = {
+            'form': form,
+            'product_instance': product_instance,
+    }
+
+    return render(request, 'inventory/product_order_worker.html', context)
+
+
+class SupplierCreate(CreateView):
+    model = Supplier
+    fields = ['business_name', 'business_email', 'cif']
+
+
+class SupplierUpdate(UpdateView):
+    model = Supplier
+    fields = '__all__'
+
+
+class SupplierDelete(DeleteView):
+    model = Supplier
+    success_url = reverse_lazy('suppliers')

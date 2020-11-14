@@ -46,7 +46,7 @@ class Product(models.Model):
 
 
 class ProductInstance(models.Model):
-    """Model representing a specific copy of a product (i.e. that can be borrowed from the library)."""
+    """Model representing a specific copy of a product (i.e. that can be )."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this particular product across whole inventory')
     product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True)
     register_date = models.DateField(null=True, blank=True)
@@ -70,6 +70,7 @@ class ProductInstance(models.Model):
 
     class Meta:
         ordering = ['register_date']
+        permissions = (("can_mark_available", "Set products as available"),)
 
     @property
     def is_overdue(self):

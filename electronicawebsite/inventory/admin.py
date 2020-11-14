@@ -40,5 +40,3 @@ class SupplierAdmin(admin.ModelAdmin):
 admin.site.register(Supplier, SupplierAdmin)
 
 admin.site.register(Category)
-
-
