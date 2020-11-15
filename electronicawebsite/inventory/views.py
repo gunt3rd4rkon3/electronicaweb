@@ -109,16 +109,37 @@ def order_product_worker(request, pk):
     return render(request, 'inventory/product_order_worker.html', context)
 
 
-class SupplierCreate(CreateView):
+class SupplierCreate(PermissionRequiredMixin, CreateView):
+    permission_required = 'inventory.can_mark_returned'
     model = Supplier
     fields = ['business_name', 'business_email', 'cif']
 
 
-class SupplierUpdate(UpdateView):
+class SupplierUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = 'inventory.can_mark_returned'
     model = Supplier
     fields = '__all__'
 
 
-class SupplierDelete(DeleteView):
+class SupplierDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = 'inventory.can_mark_returned'
     model = Supplier
     success_url = reverse_lazy('suppliers')
+
+
+class ProductCreate(PermissionRequiredMixin, CreateView):
+    permission_required = 'inventory.can_mark_returned'
+    model = Product
+    fields = ['title', 'supplier', 'maxunits', 'stock', 'summary', 'sn', 'category']
+
+
+class ProductUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = 'inventory.can_mark_returned'
+    model = Product
+    fields = '__all__'
+
+
+class ProductDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = 'inventory.can_mark_returned'
+    model = Product
+    success_url = reverse_lazy('products')

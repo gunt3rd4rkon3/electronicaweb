@@ -23,3 +23,9 @@ urlpatterns += [
     path('supplier/<int:pk>/update', views.SupplierUpdate.as_view(), name='supplier_update'),
     path('supplier/<int:pk>/delete', views.SupplierDelete.as_view(), name='supplier_delete'),
 ]
+
+urlpatterns += [
+    path('product/create', views.ProductCreate.as_view(), name='product_create'),
+    path('product/<int:pk>/update', views.ProductUpdate.as_view(), name='product_update'),
+    path('product/<int:pk>/delete', views.ProductDelete.as_view(), name='product_delete'),
+]
