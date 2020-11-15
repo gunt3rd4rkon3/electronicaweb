@@ -38,7 +38,7 @@ def index(request):
 
 class ProductListView(generic.ListView):
     model = Product
-    paginate_by = 2
+    paginate_by = 20
 
 
 class ProductDetailView(generic.DetailView):
@@ -47,7 +47,7 @@ class ProductDetailView(generic.DetailView):
 
 class SupplierListView(generic.ListView):
     model = Supplier
-    paginate_by = 2
+    paginate_by = 20
 
 
 class SupplierDetailView(generic.DetailView):

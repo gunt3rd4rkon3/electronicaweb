@@ -1,12 +1,14 @@
 {% extends "base_generic.html" %}
-
 {% block content %}
+<div class="row">
+    <div class="col-sm-8">
     <h1>Product List</h1>
     {% if product_list %}
         <ul>
             {% for product in product_list %}
             <li>
                 <a href="{{ product.get_absolute_url }}">{{ product.title }}</a> ({{ product.supplier }})
+                <a href="{% url 'product_delete' product.id %}">delete</a>
                 {% if product.stock < 6 %}
                 <a class="text-warning">menos de 6</a>
                 {% endif %}
@@ -16,4 +18,16 @@
     {% else %}
         <p>There are no products in the inventory.</p>
     {% endif %}
+    </div>
+    <div class="col-sm-4">
+            <ul class="sidebar-nav">
+                {% if user.is_staff %}
+                <li>Staff</li>
+                {% endif %}
+                {% if perms.inventory.can_mark_returned %}
+                <li><a href="{% url 'product_create'%}">Create Product</a></li>
+                {% endif %}
+            </ul>
+    </div>
+</div>
 {% endblock %}
